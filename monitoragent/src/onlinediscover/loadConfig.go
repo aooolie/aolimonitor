@@ -1,4 +1,4 @@
-package util
+package onlinediscover
 
 import (
 	"os"
@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"strings"
 	"errors"
-	"config"
 	"io/ioutil"
 )
 
@@ -47,7 +46,7 @@ func unixHome() (string,error) {
 
 func ReadConfContext(path string) string {
 	var confPath string
-	confPath = path + config.MANAGE_PATH
+	confPath = path + MANAGE_PATH
 	data, _ := ioutil.ReadFile(confPath)
 	datas := string(data)
 	subDatas := strings.Split(datas, "\n")
