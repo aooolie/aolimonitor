@@ -4,9 +4,11 @@ import (
 	"log"
 	"paging"
 	"redis"
+	"util"
 )
 
 func main() {
+	util.Start()
 	redis.SetServerUrl2Redis()
 
 	http.HandleFunc("/", paging.NodeInfo) //设置访问的路由

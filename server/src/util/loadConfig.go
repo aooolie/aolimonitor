@@ -7,6 +7,7 @@ import (
 	"strings"
 	"errors"
 	"io/ioutil"
+	"fmt"
 )
 
 var (
@@ -22,7 +23,8 @@ func Start() {
 }
 
 func getConfPath() (string,error) {
-
+	confpath, _:= unixHome()
+	fmt.Print("confPath: " + confpath + "\n")
 	return unixHome()
 }
 
@@ -56,6 +58,7 @@ func unixHome() (string,error) {
 func ReadConfContext(path string) {
 	var confPath string
 	confPath = path + MANAGE_PATH
+	fmt.Print("confPath: " + confPath + "\n")
 	data, _ := ioutil.ReadFile(confPath)
 	datas := string(data)
 	subDatas := strings.Split(datas, "\n")
@@ -64,11 +67,13 @@ func ReadConfContext(path string) {
 			continue
 		}
 		arg := strings.Split(d, "=")
-		if arg[0] == "REDIS HOST" {
-			REDIS_HOST = arg[1]
+		if strings.TrimSpace(arg[0]) == "REDIS HOST" {
+			REDIS_HOST = strings.TrimSpace(arg[1])
+			fmt.Print("REDIS_HOST: " + REDIS_HOST + "\n")
 		}
-		if arg[0] == "REDIS PORT" {
-			REDIS_PORT = arg[1]
+		if strings.TrimSpace(arg[0]) == "REDIS PORT" {
+			REDIS_PORT = strings.TrimSpace(arg[1])
+			fmt.Print("REDIS_PORT: " + REDIS_PORT + "\n")
 		}
 	}
 }

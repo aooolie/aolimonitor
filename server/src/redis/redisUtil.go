@@ -9,17 +9,22 @@ import (
 func SetServerUrl2Redis() {
 
 	ips := util.GetHostIP()
+	if len(ips) == 0 {
+		fmt.Print("[error]: ips len is 0")
+		return
+	}
 
 	/* 使用配置文件中的 Redis 服务器地址 */
 	redisUrl := util.REDIS_HOST + ":" + util.REDIS_PORT
 
+	fmt.Println("redisUrl: " + redisUrl + "\n")
 	c, err := redis.Dial("tcp", redisUrl)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	for ip, _ := range ips {
-		_, err := redis.String(c.Do("SET", util.SERVER_IP, ip))
+	for i := 0; i < len(ips); i++ {
+		_, err := redis.String(c.Do("SET", util.SERVER_IP, ips[i]))
 		if err != nil {
 			fmt.Println(err)
 			return

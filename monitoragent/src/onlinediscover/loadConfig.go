@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"io"
 	"fmt"
+	"github.com/garyburd/redigo/redis"
 )
 
 var (
@@ -21,7 +22,7 @@ var (
 func Start() {
 	confPath, _ := getConfPath()
 	ReadConfContext(confPath)
-
+	getServerIP()
 }
 
 func getConfPath() (string,error) {
@@ -67,13 +68,48 @@ func ReadConfContext(path string) {
 			continue
 		}
 		arg := strings.Split(d, "=")
-		if arg[0] == "REDIS HOST" {
-			REDIS_HOST = arg[1]
+		if strings.TrimSpace(arg[0]) == "REDIS HOST" {
+			REDIS_HOST = strings.TrimSpace(arg[1])
+			fmt.Print("REDIS_HOST: " + REDIS_HOST + "\n")
 		}
-		if arg[0] == "REDIS PORT" {
-			REDIS_PORT = arg[1]
+		if strings.TrimSpace(arg[0]) == "REDIS PORT" {
+			REDIS_PORT = strings.TrimSpace(arg[1])
+			fmt.Print("REDIS_PORT: " + REDIS_PORT + "\n")
 		}
 	}
+}
+
+/* 从redis中读取server地址 */
+func getServerIP() {
+
+	/* 使用配置文件中的 Redis 服务器地址 */
+	redisUrl := REDIS_HOST + ":" + REDIS_PORT
+
+	c, err := redis.Dial("tcp", redisUrl)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	serverIP, err := redis.String(c.Do("GET", SERVER_IP))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(serverIP)
+
+	serverPort, err := redis.String(c.Do("GET", SERVER_PORT))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(serverPort)
+
+	Url = serverIP + ":" + serverPort
+	fmt.Println("redisUrl: " + redisUrl + "\n")
+	fmt.Println("Url: " + Url + "\n")
+
+	defer c.Close()
 }
 
 func sendOnlineInfo() {
