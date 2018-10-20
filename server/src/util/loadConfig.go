@@ -1,4 +1,4 @@
-package onlinediscover
+package util
 
 import (
 	"os"
@@ -7,9 +7,6 @@ import (
 	"strings"
 	"errors"
 	"io/ioutil"
-	"net/http"
-	"io"
-	"fmt"
 )
 
 var (
@@ -74,18 +71,4 @@ func ReadConfContext(path string) {
 			REDIS_PORT = arg[1]
 		}
 	}
-}
-
-func sendOnlineInfo() {
-	client := &http.Client{}
-	url := "http://www.baidu.com"
-	reqest, err := http.NewRequest("POST", url, nil)
-	if err != nil {
-		panic(err)
-	}
-	response, _ := client.Do(reqest)
-	stdout := os.Stdout
-	_, err = io.Copy(stdout, response.Body)
-	status := response.StatusCode
-	fmt.Println(status)
 }

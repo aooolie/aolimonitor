@@ -1,4 +1,4 @@
-package onlinediscover
+package util
 
 const (
 	/**

@@ -11,6 +11,8 @@ func main() {
 	if err == nil {
 		confPath = rootPath + onlinediscover.MANAGE_PATH
 	}
-	ip := onlinediscover.ReadConfContext(rootPath)
 	fmt.Print(confPath, " ", ip)
+
+	/* 上报上线事件 */
+
 }
