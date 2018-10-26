@@ -31,7 +31,7 @@ func SetServerUrl2Redis() {
 		}
 
 		/* TODO 检测server上空闲端口 */
-		_, err = redis.String(c.Do("SET", util.SERVER_PORT, "9527"))
+		_, err = redis.String(c.Do("SET", util.SERVER_PORT, "9090"))
 		if err != nil {
 			fmt.Println(err)
 			return

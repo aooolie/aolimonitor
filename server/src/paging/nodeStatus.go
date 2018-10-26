@@ -11,7 +11,7 @@ func NodeInfo(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Form) //这些信息是输出到服务器端的打印信息
 	fmt.Println("path", r.URL.Path)
 	fmt.Println("scheme", r.URL.Scheme)
-	fmt.Println(r.Form["url_long"])
+	/* 解析URL中参数 */
 	for k, v := range r.Form {
 		fmt.Println("key:", k)
 		fmt.Println("val:", strings.Join(v, ""))

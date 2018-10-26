@@ -23,6 +23,9 @@ func Start() {
 	confPath, _ := getConfPath()
 	ReadConfContext(confPath)
 	getServerIP()
+	fmt.Print("[info] Url: "+ Url + "\n")
+	ans := HttpPOST(Url, "url_long=1")
+	fmt.Print("[info] server return: "+ ans + "\n")
 }
 
 func getConfPath() (string,error) {
@@ -114,7 +117,7 @@ func getServerIP() {
 
 func sendOnlineInfo() {
 	client := &http.Client{}
-	url := "http://www.baidu.com"
+	url := "http://"
 	reqest, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		panic(err)

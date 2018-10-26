@@ -13,7 +13,7 @@ var (
 
 func HttpPOST(url string, parm string) string{
 	client := &http.Client{}
-	request, err := http.NewRequest("POST", url, strings.NewReader(parm))
+	request, err := http.NewRequest("POST", "http://" + url + "/onlinediscover", strings.NewReader(parm))
 	if err != nil {
 		fmt.Print("error occur during create post request")
 		return ""
