@@ -15,5 +15,11 @@ const (
 	*	Redis存放 server Port
 	*/
 	SERVER_PORT = "redis_server_port"
+
+	/**
+	*	Redis存放 agent IP
+	*/
+	AGENT_IP = "redis_agent_ip"
+
 )
 

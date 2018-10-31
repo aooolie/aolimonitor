@@ -3,7 +3,6 @@ package paging
 import (
 	"net/http"
 	"fmt"
-	"strings"
 )
 
 func NodeInfo(w http.ResponseWriter, r *http.Request) {
@@ -11,10 +10,9 @@ func NodeInfo(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Form) //这些信息是输出到服务器端的打印信息
 	fmt.Println("path", r.URL.Path)
 	fmt.Println("scheme", r.URL.Scheme)
-	/* 解析URL中参数 */
-	for k, v := range r.Form {
-		fmt.Println("key:", k)
-		fmt.Println("val:", strings.Join(v, ""))
-	}
-	fmt.Fprintf(w, "Hello Wrold!") //这个写入到w的是输出到客户端的
+
+	var bodySlc []byte = make([]byte, 1024)
+	r.Body.Read(bodySlc)
+	fmt.Println("the body is:", string(bodySlc))
+	fmt.Fprintf(w, "Online Event Recived") //这个写入到w的是输出到客户端的
 }

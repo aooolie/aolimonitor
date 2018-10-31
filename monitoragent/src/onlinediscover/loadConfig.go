@@ -7,10 +7,11 @@ import (
 	"strings"
 	"errors"
 	"io/ioutil"
-	"net/http"
-	"io"
 	"fmt"
 	"github.com/garyburd/redigo/redis"
+	"time"
+	"util"
+	"strconv"
 )
 
 var (
@@ -23,9 +24,12 @@ func Start() {
 	confPath, _ := getConfPath()
 	ReadConfContext(confPath)
 	getServerIP()
-	fmt.Print("[info] Url: "+ Url + "\n")
-	ans := HttpPOST(Url, "url_long=1")
-	fmt.Print("[info] server return: "+ ans + "\n")
+
+	/* 取第一个网卡ip地址作为主机地址 */
+	util.HOST_IP = util.GetHostIP()[0]
+
+	sendOnlineInfo()
+	fmt.Print("Online event sent" + "\n")
 }
 
 func getConfPath() (string,error) {
@@ -108,23 +112,20 @@ func getServerIP() {
 	}
 	fmt.Println(serverPort)
 
-	Url = serverIP + ":" + serverPort
-	fmt.Println("redisUrl: " + redisUrl + "\n")
-	fmt.Println("Url: " + Url + "\n")
+	Host = serverIP + ":" + serverPort
 
 	defer c.Close()
 }
 
 func sendOnlineInfo() {
-	client := &http.Client{}
-	url := "http://"
-	reqest, err := http.NewRequest("POST", url, nil)
-	if err != nil {
-		panic(err)
+	var ans string
+	parm := "host=" + util.HOST_IP + ",timestamp=" + strconv.FormatInt(time.Now().Unix(),10)
+	for ans != "Online Event Recived" {
+		ans = HttpPOST("/onlinediscover", parm)
+
+		if ans != "Online Event Recived" {
+			/* 如果请求不成功，过5s重新请求 */
+			time.Sleep(5 * time.Second)
+		}
 	}
-	response, _ := client.Do(reqest)
-	stdout := os.Stdout
-	_, err = io.Copy(stdout, response.Body)
-	status := response.StatusCode
-	fmt.Println(status)
 }

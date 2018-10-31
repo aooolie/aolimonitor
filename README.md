@@ -11,9 +11,7 @@
 ```
 server开一个进程监听9527端口，有请求过来就调用goroutine处理
 ```
-- 在未收到ack时重发上线通告
-- server定期(5min)轮询所有节点
-- agent离线时发送离线通告
+- server检查agent 5min内有无上报数据，判断是否存活(Redis)
 
 ```java
 redis信息存在/opt/go/Applications/OnlineDiscover/conf路径下

@@ -5,6 +5,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"fmt"
 )
+
 /* 将 Server url 存到 Redis */
 func SetServerUrl2Redis() {
 
@@ -39,5 +40,28 @@ func SetServerUrl2Redis() {
 
 	}
 	fmt.Println("[info] write server ip to redis:", ips)
+	defer c.Close()
+}
+
+/* 将 agent ip 存进 Redis */
+func SetAgentIP2Redis(agentIP string, timestamp []byte) {
+
+	/* 使用配置文件中的 Redis 服务器地址 */
+	redisUrl := util.REDIS_HOST + ":" + util.REDIS_PORT
+
+	fmt.Println("redisUrl: " + redisUrl + "\n")
+	c, err := redis.Dial("tcp", redisUrl)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("[info] write server ip to redis:", agentIP, len(timestamp))
+	_, err = redis.String(c.Do("SET", agentIP, timestamp))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	defer c.Close()
 }

@@ -6,6 +6,9 @@ import (
 	"os"
 )
 
+var (
+	HOST_IP string
+)
 /* 获取 Server 地址 */
 func GetHostIP() []string {
 	var ips []string
@@ -22,6 +25,5 @@ func GetHostIP() []string {
 			}
 		}
 	}
-
 	return ips
 }

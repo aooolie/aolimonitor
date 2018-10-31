@@ -8,12 +8,13 @@ import (
 )
 
 var (
-	Url string
+	Host string
 )
 
 func HttpPOST(url string, parm string) string{
 	client := &http.Client{}
-	request, err := http.NewRequest("POST", "http://" + url + "/onlinediscover", strings.NewReader(parm))
+	url = "http://" + Host + url
+	request, err := http.NewRequest("POST", url , strings.NewReader(parm))
 	if err != nil {
 		fmt.Print("error occur during create post request")
 		return ""
