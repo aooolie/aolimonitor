@@ -8,6 +8,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"fmt"
+	"logger"
 )
 
 var (
@@ -19,7 +20,8 @@ var (
 func Start() {
 	confPath, _ := getConfPath()
 	ReadConfContext(confPath)
-
+	logger.IS_DEBUG = true
+	SetLogPath()
 }
 
 func getConfPath() (string,error) {
@@ -76,4 +78,9 @@ func ReadConfContext(path string) {
 			fmt.Print("REDIS_PORT: " + REDIS_PORT + "\n")
 		}
 	}
+}
+
+func SetLogPath() {
+	os.Mkdir(CONFPATH + "/log", 0x666)
+	logger.LOG_PATH = CONFPATH + "/log/monitor.log"
 }

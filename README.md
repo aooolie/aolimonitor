@@ -22,7 +22,14 @@ redis信息存在/opt/go/Applications/OnlineDiscover/conf路径下
 ### 程序更新
 
 ### Log
+- Info
 
+- Error
+
+- Debug
+```
+LOG_PATH = log/montor.log
+```
 ### 推送数据到slave
 
 ### 数据上传
